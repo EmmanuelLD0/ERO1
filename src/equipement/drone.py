@@ -8,4 +8,4 @@ class Drone:
     """
     def __init__(self):
         self.fixed_cost = 100
-        self.Cost_km = 0.01
+        self.cost_km = 0.01
