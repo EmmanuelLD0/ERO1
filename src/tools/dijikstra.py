@@ -21,12 +21,12 @@ def dijikstra(G : nx.Graph, start : int, end : int):
     G.nodes[start]['distance'] = 0
 
     while len(Q) > 0:
-        Q.sort()
+        Q.sort(key=lambda tup: tup[0])
         u = Q.pop(0)[1]
         if u == end:
             break
         for v in G.neighbors(u):
-            alt = G.nodes[u]['distance'] + G[u][v].data('length')
+            alt = G.nodes[u]['distance'] + G[u][v][0]['length']
             if alt < G.nodes[v]['distance']:
                 G.nodes[v]['distance'] = alt
                 G.nodes[v]['previous'] = u
