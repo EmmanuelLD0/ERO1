@@ -24,3 +24,8 @@ pip install -r requirements.txt
 ```
 python src/demo.py
 ```
+
+## :scroll: Documentation
+```
+firefox documentations/index.html
+```
