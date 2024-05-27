@@ -4,6 +4,7 @@
 import osmnx as ox # to load the graph from open street map
 import matplotlib.pyplot as plt # for graph visualization
 
+ox.config(use_cache=True, log_console=True)
 G = ox.graph_from_place('Montreal, Quebec, Canada', network_type='drive')
 
 print(G)
