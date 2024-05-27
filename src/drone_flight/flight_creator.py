@@ -3,7 +3,7 @@
 """
 import osmnx as ox
 import networkx as nx
-from equipement import Drone
+from equipement.drone import Drone
 
 def is_eulerian(G : nx.Graph):
     """
