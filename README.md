@@ -27,5 +27,5 @@ python src/demo.py
 
 ## :scroll: Documentation
 ```
-firefox documentations/index.html
+firefox documentations/html/index.html
 ```
