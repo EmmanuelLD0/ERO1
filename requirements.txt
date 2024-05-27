@@ -2,3 +2,4 @@ matplotlib
 osmnx
 networkx
 PyQt5
+pytest
