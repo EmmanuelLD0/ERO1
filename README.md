@@ -1,5 +1,13 @@
 # ERO1
 
+## 🤓 Team Members
+
+- Raj Mahajan
+- David Calderon
+- Maxime Bardouil
+- Terence Miralves
+- Emmamnuel Le Dreau
+
 ## ✨ Introduction
 People from Montréal are concerned with snowplowing operations, but increasing the allowed funds
 is still a delicate point for the city council [Lef19], and it is now an objective to reduce these operations cost,
