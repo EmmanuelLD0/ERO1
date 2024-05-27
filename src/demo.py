@@ -12,10 +12,10 @@ ox.settings.use_cache = True
 G = ox.graph_from_place('Montreal, Quebec, Canada', network_type='drive')
 G = ox.convert.to_undirected(G)
 
-l, price = create_flight_pattern(G)
+# l, price = create_flight_pattern(G)
 
-print(l)
-print(price)
+# print(l)
+# print(price)
 
 ox.plot_graph(G, figsize=(10, 10), node_size=10, edge_linewidth=2) # will remove when we'll do the actual implementation
 plt.show()
