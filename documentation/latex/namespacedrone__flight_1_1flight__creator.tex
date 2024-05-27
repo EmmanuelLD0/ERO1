@@ -1,0 +1,77 @@
+\doxysection{drone\+\_\+flight.\+flight\+\_\+creator Namespace Reference}
+\hypertarget{namespacedrone__flight_1_1flight__creator}{}\label{namespacedrone__flight_1_1flight__creator}\index{drone\_flight.flight\_creator@{drone\_flight.flight\_creator}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacedrone__flight_1_1flight__creator_aa0b01795a1266fc23f40026e156e3248}{is\+\_\+eulerian}} (nx.\+Graph G)
+\item 
+\mbox{\hyperlink{namespacedrone__flight_1_1flight__creator_ad5e7f309ceaf40941292436aa1f3c33f}{find\+\_\+eulerian\+\_\+path\+\_\+rec}} (nx.\+Graph G, int actual)
+\item 
+\mbox{\hyperlink{namespacedrone__flight_1_1flight__creator_af8c36f2eb14cbacffad40d9a9aca5fb1}{find\+\_\+eulerian\+\_\+circuit}} (nx.\+Graph G)
+\item 
+\mbox{\hyperlink{namespacedrone__flight_1_1flight__creator_a01bf949abeda5bee90e508ba3f977224}{calculate\+\_\+price}} (nx.\+Graph G, list path, Drone drone)
+\item 
+\mbox{\hyperlink{namespacedrone__flight_1_1flight__creator_acd1bed66245f5a3966479d888c2d8277}{create\+\_\+flight\+\_\+pattern}} (nx.\+Graph G)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}! This file will create the flight pattern of the drones
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacedrone__flight_1_1flight__creator_a01bf949abeda5bee90e508ba3f977224}\index{drone\_flight.flight\_creator@{drone\_flight.flight\_creator}!calculate\_price@{calculate\_price}}
+\index{calculate\_price@{calculate\_price}!drone\_flight.flight\_creator@{drone\_flight.flight\_creator}}
+\doxysubsubsection{\texorpdfstring{calculate\_price()}{calculate\_price()}}
+{\footnotesize\ttfamily \label{namespacedrone__flight_1_1flight__creator_a01bf949abeda5bee90e508ba3f977224} 
+drone\+\_\+flight.\+flight\+\_\+creator.\+calculate\+\_\+price (\begin{DoxyParamCaption}\item[{nx.\+Graph}]{G}{, }\item[{list}]{path}{, }\item[{Drone}]{drone}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}! This function will calculate the price of the path
+@param G: nx.Graph: the graph of the city
+@param path: list: the path of the drones
+@param drone: Drone: the drone object
+@return: float: the price of the path
+\end{DoxyVerb}
+ \Hypertarget{namespacedrone__flight_1_1flight__creator_acd1bed66245f5a3966479d888c2d8277}\index{drone\_flight.flight\_creator@{drone\_flight.flight\_creator}!create\_flight\_pattern@{create\_flight\_pattern}}
+\index{create\_flight\_pattern@{create\_flight\_pattern}!drone\_flight.flight\_creator@{drone\_flight.flight\_creator}}
+\doxysubsubsection{\texorpdfstring{create\_flight\_pattern()}{create\_flight\_pattern()}}
+{\footnotesize\ttfamily \label{namespacedrone__flight_1_1flight__creator_acd1bed66245f5a3966479d888c2d8277} 
+drone\+\_\+flight.\+flight\+\_\+creator.\+create\+\_\+flight\+\_\+pattern (\begin{DoxyParamCaption}\item[{nx.\+Graph}]{G}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}! This function will create the flight pattern of the drones
+@param G: nx.Graph: the graph of the city
+@return: pair: list: the flight pattern of the drones, float: the price of the path
+\end{DoxyVerb}
+ \Hypertarget{namespacedrone__flight_1_1flight__creator_af8c36f2eb14cbacffad40d9a9aca5fb1}\index{drone\_flight.flight\_creator@{drone\_flight.flight\_creator}!find\_eulerian\_circuit@{find\_eulerian\_circuit}}
+\index{find\_eulerian\_circuit@{find\_eulerian\_circuit}!drone\_flight.flight\_creator@{drone\_flight.flight\_creator}}
+\doxysubsubsection{\texorpdfstring{find\_eulerian\_circuit()}{find\_eulerian\_circuit()}}
+{\footnotesize\ttfamily \label{namespacedrone__flight_1_1flight__creator_af8c36f2eb14cbacffad40d9a9aca5fb1} 
+drone\+\_\+flight.\+flight\+\_\+creator.\+find\+\_\+eulerian\+\_\+circuit (\begin{DoxyParamCaption}\item[{nx.\+Graph}]{G}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}! This function will find the eulerian circuit of the graph
+@param G: nx.Graph: the graph of the city
+@return: list: the eulerian circuit of the graph
+\end{DoxyVerb}
+ \Hypertarget{namespacedrone__flight_1_1flight__creator_ad5e7f309ceaf40941292436aa1f3c33f}\index{drone\_flight.flight\_creator@{drone\_flight.flight\_creator}!find\_eulerian\_path\_rec@{find\_eulerian\_path\_rec}}
+\index{find\_eulerian\_path\_rec@{find\_eulerian\_path\_rec}!drone\_flight.flight\_creator@{drone\_flight.flight\_creator}}
+\doxysubsubsection{\texorpdfstring{find\_eulerian\_path\_rec()}{find\_eulerian\_path\_rec()}}
+{\footnotesize\ttfamily \label{namespacedrone__flight_1_1flight__creator_ad5e7f309ceaf40941292436aa1f3c33f} 
+drone\+\_\+flight.\+flight\+\_\+creator.\+find\+\_\+eulerian\+\_\+path\+\_\+rec (\begin{DoxyParamCaption}\item[{nx.\+Graph}]{G}{, }\item[{int}]{actual}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}! This function will find the eulerian path of the graph recursively
+@param G: nx.Graph: the graph of the city
+@param actual: int: the actual node
+@return: list: the eulerian path of the graph
+\end{DoxyVerb}
+ \Hypertarget{namespacedrone__flight_1_1flight__creator_aa0b01795a1266fc23f40026e156e3248}\index{drone\_flight.flight\_creator@{drone\_flight.flight\_creator}!is\_eulerian@{is\_eulerian}}
+\index{is\_eulerian@{is\_eulerian}!drone\_flight.flight\_creator@{drone\_flight.flight\_creator}}
+\doxysubsubsection{\texorpdfstring{is\_eulerian()}{is\_eulerian()}}
+{\footnotesize\ttfamily \label{namespacedrone__flight_1_1flight__creator_aa0b01795a1266fc23f40026e156e3248} 
+drone\+\_\+flight.\+flight\+\_\+creator.\+is\+\_\+eulerian (\begin{DoxyParamCaption}\item[{nx.\+Graph}]{G}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}! This function will check if the graph is eulerian
+@param G: nx.Graph: the graph of the city
+@return: bool: if the graph is eulerian
+\end{DoxyVerb}
+ 

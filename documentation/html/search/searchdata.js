@@ -1,9 +1,9 @@
 var indexSectionsWithContent =
 {
-  0: "_dfps",
+  0: "_cdefirs",
   1: "ds",
-  2: "dfps",
-  3: "_"
+  2: "der",
+  3: "_cfi"
 };
 
 var indexSectionNames =
