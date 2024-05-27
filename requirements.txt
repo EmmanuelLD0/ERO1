@@ -1,0 +1,4 @@
+matplotlib
+osmnx
+networkx
+PyQt5
