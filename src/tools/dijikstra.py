@@ -36,7 +36,7 @@ def dijikstra(G : nx.Graph, start : int, end : int):
     if G.nodes[u]['distance'] == float('inf') or G.nodes[u]['previous'] is None:
         raise ValueError("No path found between the two nodes " + str(start) + " and " + str(end))
     while u is not None:
-        ans.insert(u)
+        ans.insert(0, u)
         u = G.nodes[u]['previous']
     return ans
         
