@@ -11,6 +11,8 @@ class Snowplow:
         ! This function will initialize the class
         @param type: int: the type of snowplow, can be 1 or 2
         """
+        self.type = type
+        self.node_id = 0
         if type == 1:
             self.fixed_cost = 500
             self.cost_km = 1.1

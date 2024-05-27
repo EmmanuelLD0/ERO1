@@ -9,3 +9,4 @@ class Drone:
     def __init__(self):
         self.fixed_cost = 100
         self.cost_km = 0.01
+        self.node_id = 0
