@@ -1,7 +1,6 @@
 """
 ! Dijikstra's Algorithm
 """
-import heapq
 import osmnx as ox
 import networkx as nx
 
@@ -38,5 +37,5 @@ def dijikstra(G : nx.Graph, start : int, end : int):
     while u is not None:
         ans.insert(0, u)
         u = G.nodes[u]['previous']
+
     return ans
-        
