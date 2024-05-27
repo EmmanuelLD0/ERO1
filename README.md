@@ -1,4 +1,4 @@
-# ERO1
+# ERO1 - Clearing Snow in Montreal
 
 ## 🤓 Team Members
 
