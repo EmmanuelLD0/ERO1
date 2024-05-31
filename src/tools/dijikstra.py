@@ -14,6 +14,8 @@ def dijikstra(G : nx.Graph, start : int, end : int):
     """
     ans = []
     Q = []
+    if nx.is_empty(G):
+        return ans
     for node in G.nodes:
         G.nodes[node]['visited'] = False
         G.nodes[node]['distance'] = float('inf')
@@ -26,16 +28,22 @@ def dijikstra(G : nx.Graph, start : int, end : int):
         if u == end:
             break
         for v in G.neighbors(u):
-            alt = G.nodes[u]['distance'] + G[u][v][0]['length']
+            alt = G.nodes[u]['distance'] + G[u][v]['weight']
             if alt < G.nodes[v]['distance']:
                 G.nodes[v]['distance'] = alt
                 G.nodes[v]['previous'] = u
     
     u = end
+    if not u in G.nodes:
+        return []
     if G.nodes[u]['distance'] == float('inf') or G.nodes[u]['previous'] is None:
         raise ValueError("No path found between the two nodes " + str(start) + " and " + str(end))
     while u is not None:
         ans.insert(0, u)
-        u = G.nodes[u]['previous']
+        print(G.nodes[u])
+        if 'previous' in G.nodes[u].keys():
+            u = G.nodes[u]['previous']
+        else:
+            u = None
 
     return ans
