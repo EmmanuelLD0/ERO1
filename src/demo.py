@@ -6,16 +6,37 @@ from drone_flight.flight_creator import *
 import osmnx as ox # to load the graph from open street map
 import matplotlib.pyplot as plt # for graph visualization
 
+print('Initial Survey of Montreal with Drones...')
+print('Calculating the price for each sector...')
+
 ox.settings.log_console = False
 ox.settings.use_cache = True
 
-G = ox.graph_from_place('Montreal, Quebec, Canada', network_type='drive')
-G = ox.convert.to_undirected(G)
+verdun = ox.graph_from_place('Verdun, Montreal, Quebec, Canada', network_type='drive')
+verdun = ox.convert.to_undirected(verdun)
+l, price = create_flight_pattern(verdun)
+print(f"Verdun : ${round(price)}")
 
-# l, price = create_flight_pattern(G)
+outremont = ox.graph_from_place('Outremont, Montreal, Quebec, Canada', network_type='drive')
+outremont = ox.convert.to_undirected(outremont )
+l, price = create_flight_pattern(outremont )
+print(f"Outrmont : ${round(price)}")
 
-# print(l)
-# print(price)
+anjou = ox.graph_from_place('Anjou, Montreal, Quebec, Canada', network_type='drive')
+anjou = ox.convert.to_undirected(anjou)
+l, price = create_flight_pattern(anjou)
+print(f"Anjou : ${round(price)}")
 
-ox.plot_graph(G, figsize=(10, 10), node_size=10, edge_linewidth=2) # will remove when we'll do the actual implementation
-plt.show()
+Rivière_des_Prairies = ox.graph_from_place('Rivière-des-Prairies, Montreal, Quebec, Canada', network_type='drive')
+Rivière_des_Prairies = ox.convert.to_undirected(Rivière_des_Prairies)
+l, price = create_flight_pattern(Rivière_des_Prairies)
+print(f"Rivière_des_Prairies : ${round(price)}")
+
+LPMR = ox.graph_from_place('Le plateau-Mont-Royal, Montreal, Quebec, Canada', network_type='drive')
+LPMR = ox.convert.to_undirected(LPMR)
+l, price = create_flight_pattern(LPMR)
+print(f"Le plateau-Mont-Royal : ${round(price)}")
+
+print('-----------------------------------')
+
+print('Plowing the Snow...')

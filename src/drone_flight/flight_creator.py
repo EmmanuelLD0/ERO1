@@ -51,35 +51,40 @@ def cpp(G : nx.Graph):
     @param G: nx.Graph: the graph of the city
     @return: list: the flight pattern of the drones
     """
-    #get the odd nodes
-    odd_nodes = [v for v in G.nodes if G.degree[v] % 2 != 0]
-    #pair the odd nodes
-    odd_pairs = list(combinations(odd_nodes, 2))
-    #calculate the shortest path between the odd nodes
-    shortest_path = dict()
-    for pair in odd_pairs:
-        shortest_path[pair] = dijikstra(G, pair[0], pair[1])
-    #find the minimum weight matching
-    min_pairs = []
-    min_distance = float('inf')
-    
-    for pair_set in combinations(odd_pairs, len(odd_nodes) // 2):
-        covered = set(sum(pair_set, ()))
-        if len(covered) == len(odd_nodes):
-            distance = sum(shortest_path[u][v] for u, v in pair_set)
-            if distance < min_distance:
-                min_distance = distance
-                min_pairs = pair_set
-    
-    #add the shortest paths to the graph
-    for u, v in min_pairs:
-        path = dijikstra(G, u, v)
-        for i in range(len(path) - 1):
-            G.add_edge(path[i], path[i + 1])
-        
-    #Find eulerian circuit
-    flight_path = find_eulerian_circuit(G)
-    return flight_path
+    if not nx.is_connected(G):
+        raise ValueError("The graph is not connected.")
+
+    # Find all nodes with odd degree
+    odd_degree_nodes = [node for node, degree in G.degree() if degree % 2 == 1]
+
+    # Compute all pairs of odd degree nodes. In each pair, compute the shortest
+    # path between the nodes. Add the paths to a list.
+    odd_node_pairs = list(combinations(odd_degree_nodes, 2))
+    odd_node_pairs_shortest_paths = [(pair, nx.shortest_path(G, pair[0], pair[1])) for pair in odd_node_pairs]
+
+    # Create a complete graph between all odd nodes. Each edge in this graph
+    # represents a possible pairing of two odd nodes. The weight of each edge is
+    # the length of the shortest path between these nodes in the original graph.
+    odd_node_graph = nx.Graph()
+    for pair, path in odd_node_pairs_shortest_paths:
+        odd_node_graph.add_edge(pair[0], pair[1], weight=len(path) - 1)
+
+    # Compute the minimum weight matching of the odd node graph. This gives us the
+    # pairs of odd nodes that should be connected in the original graph.
+    min_weight_matching = nx.algorithms.max_weight_matching(odd_node_graph, True)
+
+    # For each pair of nodes in the minimum weight matching, connect the nodes in
+    # the original graph by the shortest path between them.
+    for node1, node2 in min_weight_matching:
+        path = nx.shortest_path(G, node1, node2)
+        path_edges = list(zip(path[:-1], path[1:]))
+        G.add_edges_from(path_edges)
+
+    # Compute the Eulerian circuit of the modified graph.
+    euler_circuit = list(nx.eulerian_circuit(G))
+
+    return euler_circuit
+
 
 def calculate_price(G : nx.Graph, path : list, drone : Drone):
     """
@@ -91,7 +96,9 @@ def calculate_price(G : nx.Graph, path : list, drone : Drone):
     """
     price = drone.fixed_cost
     for i in range(len(path) - 1):
-        price += drone.cost_km * G[path[i]][path[i + 1]]['length']
+        if not 0 in G[path[i][0]][path[i][1]]:
+            continue
+        price += drone.cost_km * (G[path[i][0]][path[i][1]][0]['length'] / 1000)
     return price
 
 def create_flight_pattern(G : nx.Graph):
@@ -100,7 +107,6 @@ def create_flight_pattern(G : nx.Graph):
     @param G: nx.Graph: the graph of the city
     @return: pair: list: the flight pattern of the drones, float: the price of the path
     """
-    print("Creating flight pattern")
     #check if the graph is eulerian
     if not is_eulerian(G):
         #Use cpp
@@ -108,7 +114,7 @@ def create_flight_pattern(G : nx.Graph):
     else:
         #Use eulerian circuit
         flight_path = find_eulerian_circuit(G)
-    #Create our drone
+    #Create our dronfound between the two nodes 17052772 and 17052789e
     drone = Drone()
     #Calculate the price
     price = calculate_price(G, flight_path, drone)

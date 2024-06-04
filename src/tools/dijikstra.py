@@ -28,7 +28,7 @@ def dijikstra(G : nx.Graph, start : int, end : int):
         if u == end:
             break
         for v in G.neighbors(u):
-            alt = G.nodes[u]['distance'] + G[u][v]['weight']
+            alt = G.nodes[u]['distance'] + G[u][v][0]['length']
             if alt < G.nodes[v]['distance']:
                 G.nodes[v]['distance'] = alt
                 G.nodes[v]['previous'] = u
