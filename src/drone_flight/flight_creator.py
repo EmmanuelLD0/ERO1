@@ -80,7 +80,7 @@ def cpp(G: nx.Graph):
     euler_circuit = list(nx.eulerian_circuit(G))
     return euler_circuit
 
-def calculate_price(G: nx.Graph, path: list, drones: list):
+def calculate_price(G: nx.Graph, path: list, drones: list, sector: str):
     """
     ! This function will calculate the price of the path
     @param G: nx.Graph: the graph of the city
@@ -130,11 +130,11 @@ def calculate_price(G: nx.Graph, path: list, drones: list):
             # went over time needs more drones
             return [], -1
     for i in range(len(drones)):
-        print("Drone", i, "finished at", times[i].strftime("%H:%M:%S"))
-    return new_path, price
+        print("Drone", i, sector, "finished at", times[i].strftime("%H:%M:%S"))
+    return price
 
 
-def create_flight_pattern(G: nx.Graph):
+def create_flight_pattern(G: nx.Graph, sector: str):
     """
     ! This function will create the flight pattern of the drones
     @param G: nx.Graph: the graph of the city
@@ -150,8 +150,8 @@ def create_flight_pattern(G: nx.Graph):
     # Create our dronfound between the two nodes 17052772 and 17052789e
     drones = [Drone()]
     # Calculate the price
-    new_path, price = calculate_price(G, flight_path, drones)
+    price = calculate_price(G, flight_path, drones, sector)
     while price == -1:
         drones.append(Drone())
-        new_path, price = calculate_price(G, flight_path, drones)
-    return new_path, price
+        price = calculate_price(G, flight_path, drones, sector)
+    return flight_path, price
