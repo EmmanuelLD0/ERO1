@@ -1,2 +1,4 @@
-export PYTHONPATH=$(pwd)/src:$PYTHONPATH
-pytest tests/*
+#export PYTHONPATH=$(pwd)/src:$PYTHONPATH
+#pytest tests/*
+
+python src/demo.py

@@ -6,6 +6,7 @@ import networkx as nx
 from equipement.drone import Drone
 from tools.dijikstra import dijikstra
 from itertools import combinations
+from datetime import datetime, timedelta
 
 def cpp(G : nx.Graph):
     """
@@ -43,11 +44,19 @@ def calculate_price(G : nx.Graph, path : list, drone : Drone):
     @param drone: Drone: the drone object
     @return: float: the price of the path
     """
+    time = datetime.strftime('00:00:00', '%H:%M:%S')
     price = drone.fixed_cost
     for i in range(len(path) - 1):
         if not 0 in G[path[i][0]][path[i][1]]:
             continue
         price += drone.cost_km * (G[path[i][0]][path[i][1]][0]['length'] / 1000)
+        time += timedelta(seconds=G[path[i][0]][path[i][1]][0]['length'] / drone.speed)
+        #check that the time is still in the first day
+        if time > datetime.strftime('23:59:59', '%H:%M:%S'):
+            print("The time is over the first day")
+            price += drone.fixed_cost
+            time = datetime.strftime('00:00:00', '%H:%M:%S')
+    print("The drone took " + str(time) + " to complete the path.")
     return price
 
 def create_flight_pattern(G : nx.Graph):
