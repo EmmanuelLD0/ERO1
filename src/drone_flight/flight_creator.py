@@ -93,7 +93,7 @@ def calculate_price(G: nx.Graph, path: list, drones: list, sector: str):
     active_drone_index = 0
     new_path = []
     new_path.append([])
-    for i in range(len(path) - 1):
+    for i in range(len(path)):
         if (
             not 0
             in G[path[i][0]][

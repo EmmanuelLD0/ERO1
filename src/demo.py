@@ -1,4 +1,5 @@
 from drone_flight.flight_creator import *
+from tools.display import display
 """
 ! this file will show off a demo of our code
 """
@@ -48,6 +49,8 @@ i = 0
 for result in results:
     print(f"{list[i][1]} : ${round(result[1])}")
     i+=1
+    display(list[i-1][0], result[0])
+    
 
 print('-----------------------------------')
 
