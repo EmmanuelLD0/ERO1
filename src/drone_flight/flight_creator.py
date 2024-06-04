@@ -131,7 +131,7 @@ def calculate_price(G: nx.Graph, path: list, drones: list, sector: str):
             return [], -1
     for i in range(len(drones)):
         print("Drone", i, sector, "finished at", times[i].strftime("%H:%M:%S"))
-    return price
+    return new_path, price
 
 
 def create_flight_pattern(G: nx.Graph, sector: str):
