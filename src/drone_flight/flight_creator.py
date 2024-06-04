@@ -86,11 +86,13 @@ def calculate_price(G: nx.Graph, path: list, drones: list):
     @param G: nx.Graph: the graph of the city
     @param path: list: the path of the drones
     @param drones: list: listy of the drones
-    @return: float: the price of the path
+    @return: pair: (list: (pair: int int)) int the price of the path and the new path
     """
     times = [datetime.strptime("00:00:00", "%H:%M:%S") for i in range(len(drones))]
     price = drones[0].fixed_cost * len(drones)
     active_drone_index = 0
+    new_path = []
+    new_path.append([])
     for i in range(len(path) - 1):
         if (
             not 0
@@ -106,8 +108,9 @@ def calculate_price(G: nx.Graph, path: list, drones: list):
             / drones[active_drone_index].speed
         ) + times[active_drone_index] > datetime.strptime("23:59:59", "%H:%M:%S"):
             if active_drone_index == len(drones) - 1:
-                return -1
+                return [], -1
             active_drone_index += 1
+            new_path.append([])
 
         price += drones[active_drone_index].cost_km * (
             G[path[i][0]][
@@ -121,20 +124,21 @@ def calculate_price(G: nx.Graph, path: list, drones: list):
             ][0]["length"]
             / drones[active_drone_index].speed
         )
+        new_path[active_drone_index].append(path[i])
         # check that the time is still in the first day
         if times[active_drone_index] > datetime.strptime("23:59:59", "%H:%M:%S"):
             # went over time needs more drones
-            return -1
+            return [], -1
     for i in range(len(drones)):
         print("Drone", i, "finished at", times[i].strftime("%H:%M:%S"))
-    return price
+    return new_path, price
 
 
 def create_flight_pattern(G: nx.Graph):
     """
     ! This function will create the flight pattern of the drones
     @param G: nx.Graph: the graph of the city
-    @return: pair: list: the flight pattern of the drones, float: the price of the path
+    @return: pair: list: list: pair: int, int the flight pattern of all the drones, float: the price of the path
     """
     # check if the graph is eulerian
     if not is_eulerian(G):
@@ -146,8 +150,8 @@ def create_flight_pattern(G: nx.Graph):
     # Create our dronfound between the two nodes 17052772 and 17052789e
     drones = [Drone()]
     # Calculate the price
-    price = calculate_price(G, flight_path, drones)
+    new_path, price = calculate_price(G, flight_path, drones)
     while price == -1:
         drones.append(Drone())
-        price = calculate_price(G, flight_path, drones)
-    return flight_path, price
+        new_path, price = calculate_price(G, flight_path, drones)
+    return new_path, price
