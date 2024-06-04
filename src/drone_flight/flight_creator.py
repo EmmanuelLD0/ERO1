@@ -150,8 +150,8 @@ def create_flight_pattern(G: nx.Graph, sector: str):
     # Create our dronfound between the two nodes 17052772 and 17052789e
     drones = [Drone()]
     # Calculate the price
-    price = calculate_price(G, flight_path, drones, sector)
+    new_path, price = calculate_price(G, flight_path, drones, sector)
     while price == -1:
         drones.append(Drone())
-        price = calculate_price(G, flight_path, drones, sector)
-    return flight_path, price
+        new_path, price = calculate_price(G, flight_path, drones, sector)
+    return new_path, price
