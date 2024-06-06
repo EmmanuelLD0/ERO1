@@ -8,7 +8,7 @@ from demo import demo
 
 import tkinter as tk
 import sys
-
+import threading
 
 class RediectStdout:
     """
@@ -117,6 +117,12 @@ def main():
                                 command=lambda: open_popup(root))
     settings_button.pack(padx=10, pady=10)
 
+    #dw about this it's too fool it
+    image_label = tk.Label(root)
+
+    #create the thread for launching the demo
+    thread = threading.Thread(target=demo, args=(image_label, graph_title, fixed_cost, cost_km, speed, graph_images))
+
     # navigation buttons
     prev_button = tk.Button(
         root, text="Previous", font=("Arial", 15), command=lambda: show_graph(image_label, image_label, -1)
@@ -129,7 +135,6 @@ def main():
     next_button.pack(side=tk.RIGHT, padx=10)
 
     # image label
-    image_label = tk.Label(root)
     image_label.pack()
 
     # debug interface
@@ -139,7 +144,7 @@ def main():
     # demo button
     demo_button = tk.Button(
         root, text="RUN PROGRAM", font=('Arial', 18),
-        command=lambda: demo(image_label, graph_title, fixed_cost, cost_km, speed, graph_images)
+        command=lambda: thread.start() 
     )
     demo_button.pack()
 
