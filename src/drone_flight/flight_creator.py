@@ -134,7 +134,7 @@ def calculate_price(G: nx.Graph, path: list, drones: list, sector: str):
     return new_path, price
 
 
-def create_flight_pattern(G: nx.Graph, sector: str):
+def create_flight_pattern(G: nx.Graph, sector: str, fixed_cost: float, cost_km: float, speed: float):
     """
     ! This function will create the flight pattern of the drones
     @param G: nx.Graph: the graph of the city
@@ -148,10 +148,18 @@ def create_flight_pattern(G: nx.Graph, sector: str):
         # Use eulerian circuit
         flight_path = find_eulerian_circuit(G)
     # Create our dronfound between the two nodes 17052772 and 17052789e
-    drones = [Drone()]
+    drone = Drone()
+    drone.fixed_cost = fixed_cost
+    drone.cost_km = cost_km
+    drone.speed = speed
+    drones = [drone]
     # Calculate the price
     new_path, price = calculate_price(G, flight_path, drones, sector)
     while price == -1:
-        drones.append(Drone())
+        new_drone = Drone()
+        new_drone.fixed_cost = fixed_cost
+        new_drone.cost_km = cost_km
+        new_drone.speed = speed
+        drones.append(new_drone)
         new_path, price = calculate_price(G, flight_path, drones, sector)
     return new_path, price
