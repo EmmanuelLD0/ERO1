@@ -44,6 +44,7 @@ def display(G: nx.Graph, path: list, screen: tk.Canvas, title: str):
     @param path: list: list: the flight pattern of the drones
     """
     color = ['r', 'g', 'b', 'y', 'm', 'c', 'k']
+    print("in display")
     
     for i in range(len(path)):
         for j in range(len(path[i])):
@@ -52,10 +53,6 @@ def display(G: nx.Graph, path: list, screen: tk.Canvas, title: str):
                 G[u][v][0].update({'color': color[i % 7]})
             else:
                 G.add_edge(u, v, color=color[i % 7])
-
-    edge_colors = []
-    for u, v, key, data in G.edges(keys=True, data=True):
-        edge_colors.append(data.get('color', 'k'))
 
     img = create_image(G)
     graph_images.append((img, title))

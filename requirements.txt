@@ -3,3 +3,4 @@ osmnx
 networkx
 PyQt5
 pytest
+tk

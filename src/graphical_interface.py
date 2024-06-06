@@ -20,6 +20,7 @@ class RediectStdout:
 
     def write(self, message):
         self.terminal.insert(tk.END, message)
+        # self.terminal.update_idletasks();
 
     def flush(self):
         pass
@@ -39,6 +40,7 @@ def save_settings(pop_up: tk.Toplevel, _fixed_cost: str, _cost_km: str, _speed: 
     @param cost_km: str: the cost per km of the drones
     @param speed: str: the speed of the drones
     """
+    global fixed_cost, cost_km, speed
     fixed_cost = float(_fixed_cost)
     cost_km = float(_cost_km)
     speed = float(_speed)
@@ -103,26 +105,26 @@ def main():
     root.geometry("800x600")
 
     # title
-    title = tk.Label(root, text="ERO")
+    title = tk.Label(root, text="ERO1 PING 39", font=("Arial", 24))
     title.pack()
 
     # Graph title
     graph_title = tk.Label(root, text="")
     graph_title.pack()
 
-    # demo button
-    demo_button = tk.Button(
-        root, text="Demo", command=lambda: demo(image_label, graph_title, fixed_cost, cost_km, speed, graph_images)
-    )
-    demo_button.pack()
+    # settings button
+    settings_button = tk.Button(root, text="Customize Parameters", font=('Arial', 15),
+                                command=lambda: open_popup(root))
+    settings_button.pack(padx=10, pady=10)
 
     # navigation buttons
     prev_button = tk.Button(
-        root, text="Previous", command=lambda: show_graph(image_label, image_label, -1)
+        root, text="Previous", font=("Arial", 15), command=lambda: show_graph(image_label, image_label, -1)
     )
     prev_button.pack(side=tk.LEFT, padx=10)
     next_button = tk.Button(
-        root, text="Next", command=lambda: show_graph(image_label, image_label, 1)
+        root, text="Next", font=("Arial", 15),
+        command=lambda: show_graph(image_label, image_label, 1)
     )
     next_button.pack(side=tk.RIGHT, padx=10)
 
@@ -131,12 +133,15 @@ def main():
     image_label.pack()
 
     # debug interface
-    debug_terminal = tk.Text(root)
+    debug_terminal = tk.Text(root, font=('Arial', 12), width=80, height=15)
     debug_terminal.pack()
 
-    # settings button
-    settings_button = tk.Button(root, text="Settings", command=lambda: open_popup(root))
-    settings_button.pack(padx=10, pady=10)
+    # demo button
+    demo_button = tk.Button(
+        root, text="RUN PROGRAM", font=('Arial', 18),
+        command=lambda: demo(image_label, graph_title, fixed_cost, cost_km, speed, graph_images)
+    )
+    demo_button.pack()
 
     # catching all stdout and stderr
     OriginalStdout = sys.stdout
