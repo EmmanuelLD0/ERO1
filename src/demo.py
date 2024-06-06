@@ -10,6 +10,7 @@ import osmnx as ox  # to load the graph from open street map
 import matplotlib.pyplot as plt  # for graph visualization
 import multiprocessing as mp  # for parallel processing
 import tkinter as tk  # for the graphical interface
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 def demo(
@@ -26,98 +27,29 @@ def demo(
     ox.settings.log_console = False
     ox.settings.use_cache = True
 
-    verdun = ox.graph_from_place('Verdun, Montreal, Quebec, Canada', network_type='drive')
-    verdun = ox.convert.to_undirected(verdun)
-    l, price = create_flight_pattern(verdun, "verdun", fixed_cost, cost_km, speed)
-    print(f"Verdun : ${round(price)}")
+    locations = [
+        ('Verdun, Montreal, Quebec, Canada', 'verdun'),
+        ('Outremont, Montreal, Quebec, Canada', 'outremont'),
+        ('Anjou, Montreal, Quebec, Canada', 'Anjou'),
+        ('Rivière-des-Prairies, Montreal, Quebec, Canada', 'Rivière-des-Prairies'),
+        ('Le plateau-Mont-Royal, Montreal, Quebec, Canada', 'Le plateau-Mont-Royal')
+    ]
 
-    display(verdun, l, screen, "Verdun")
+    def process_location(location):
+        place, name = location
+        graph = ox.graph_from_place(place, network_type='drive')
+        graph = ox.convert.to_undirected(graph)
+        path, price = create_flight_pattern(graph, name, fixed_cost, cost_km, speed)
+        return graph, path, price, name
 
-    outremont = ox.graph_from_place('Outremont, Montreal, Quebec, Canada', network_type='drive')
-    outremont = ox.convert.to_undirected(outremont )
-    l, price = create_flight_pattern(outremont, "outremont", fixed_cost, cost_km, speed)
-    print(f"Outrmont : ${round(price)}")
+    with ThreadPoolExecutor() as executor:
+        futures = {executor.submit(process_location, loc): loc for loc in locations}
 
-    display(outremont, l, screen, "Outremont")
-
-    anjou = ox.graph_from_place('Anjou, Montreal, Quebec, Canada', network_type='drive')
-    anjou = ox.convert.to_undirected(anjou)
-    l, price = create_flight_pattern(anjou, "Anjou", fixed_cost, cost_km, speed)
-    print(f"Anjou : ${round(price)}")
-
-    display(anjou, l, screen, "Anjou")
-
-    Rivière_des_Prairies = ox.graph_from_place('Rivière-des-Prairies, Montreal, Quebec, Canada', network_type='drive')
-    Rivière_des_Prairies = ox.convert.to_undirected(Rivière_des_Prairies)
-    l, price = create_flight_pattern(Rivière_des_Prairies, "Rivere-des-Prairies", fixed_cost, cost_km, speed)
-    print(f"Rivière_des_Prairies : ${round(price)}")
-
-    display(Rivière_des_Prairies, l, screen, "Rivere-des-Prairies")
-
-    LPMR = ox.graph_from_place('Le plateau-Mont-Royal, Montreal, Quebec, Canada', network_type='drive')
-    LPMR = ox.convert.to_undirected(LPMR)
-    l, price = create_flight_pattern(LPMR, "Le plateau-Mont-Royal", fixed_cost, cost_km, speed)
-    print(f"Le plateau-Mont-Royal : ${round(price)}")
-
-    display(LPMR, l, screen, "Le plateau-Mont-Royal")
+        for future in as_completed(futures):
+            graph, path, price, name = future.result()
+            print(f"{name} : ${round(price)}")
+            display(graph, path, screen, name)
 
     print('-----------------------------------')
 
     print('Plowing the Snow...')
-
-    # verdun = ox.graph_from_place(
-    #     "Verdun, Montreal, Quebec, Canada", network_type="drive"
-    # )
-    # verdun = ox.convert.to_undirected(verdun)
-    # # l, price = create_flight_pattern(verdun)
-    # # print(f"Verdun : ${round(price)}")
-    #
-    # outremont = ox.graph_from_place(
-    #     "Outremont, Montreal, Quebec, Canada", network_type="drive"
-    # )
-    # outremont = ox.convert.to_undirected(outremont)
-    # # l, price = create_flight_pattern(outremont )
-    # # print(f"Outrmont : ${round(price)}")
-    #
-    # anjou = ox.graph_from_place("Anjou, Montreal, Quebec, Canada", network_type="drive")
-    # anjou = ox.convert.to_undirected(anjou)
-    # # l, price = create_flight_pattern(anjou)
-    # # print(f"Anjou : ${round(price)}")
-    #
-    # Rivière_des_Prairies = ox.graph_from_place(
-    #     "Rivière-des-Prairies, Montreal, Quebec, Canada", network_type="drive"
-    # )
-    # Rivière_des_Prairies = ox.convert.to_undirected(Rivière_des_Prairies)
-    # # l, price = create_flight_pattern(Rivière_des_Prairies)
-    # # print(f"Rivière_des_Prairies : ${round(price)}")
-    #
-    # LPMR = ox.graph_from_place(
-    #     "Le plateau-Mont-Royal, Montreal, Quebec, Canada", network_type="drive"
-    # )
-    # LPMR = ox.convert.to_undirected(LPMR)
-    # # l, price = create_flight_pattern(LPMR)
-    # # print(f"Le plateau-Mont-Royal : ${round(price)}")
-    #
-    # list = [
-    #     (verdun, "Verdun", fixed_cost, cost_km, speed),
-    #     (outremont, "Outremont", fixed_cost, cost_km, speed),
-    #     (anjou, "Anjou", fixed_cost, cost_km, speed),
-    #     (Rivière_des_Prairies, "Rivière des Prairies", fixed_cost, cost_km, speed),
-    #     (LPMR, "Le plateau-Mont-Royal", fixed_cost, cost_km, speed),
-    # ]
-    #
-    # with mp.Pool(5) as p:
-    #     results = p.starmap(create_flight_pattern, list)
-    #
-    # i = 1
-    # for result in results:
-    #     print(f"{list[i-1][1]} : ${round(result[1])}")
-    #     display(list[i - 1][0], result[0], screen, list[i-1][1])
-    #     i += 1
-
-    # show the first graph
-    # if graph_images:
-    #     display.update_image(graph_images[0][0], screen)
-    #     title_label.config(text=graph_images[0][1])
-
-        # print(f"{list[i-1][1]} : ${round(result[1])}")

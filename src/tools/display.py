@@ -44,7 +44,6 @@ def display(G: nx.Graph, path: list, screen: tk.Canvas, title: str):
     @param path: list: list: the flight pattern of the drones
     """
     color = ['r', 'g', 'b', 'y', 'm', 'c', 'k']
-    print("in display")
     
     for i in range(len(path)):
         for j in range(len(path[i])):
