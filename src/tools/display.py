@@ -10,17 +10,31 @@ import numpy as np
 from PIL import Image, ImageTk
 import osmnx as ox
 import networkx as nx
+from matplotlib.patches import FancyArrowPatch
+
 
 graph_images = []
 
-def create_image(G: nx.Graph):
+def create_image(G: nx.Graph, path: list, edge_colors: dict):
     """
     This function will create an image of the graph
     @param G: nx.Graph: the graph of the city
     @return: Image: the image of the graph
     """
-    edge_colors = [data.get('color', 'k') for u, v, key, data in G.edges(keys=True, data=True)]
-    fig, ax = ox.plot_graph(G, edge_color=edge_colors, bgcolor='white', node_color='black', node_edgecolor='black', node_zorder=2, show=False)
+    #edge_colors = [data.get('color', 'k') for u, v, key, data in G.edges(keys=True, data=True)]
+    #fig, ax = ox.plot_graph(G, edge_color=edge_colors, bgcolor='white', node_color='black', node_edgecolor='black', node_zorder=2, show=False)
+    fig, ax = ox.plot_graph(G, bgcolor='white', node_color='black', node_edgecolor='black', node_zorder=2, show=False, close=True)
+
+
+    for i, route in enumerate(path):
+        for (u, v) in route:
+            if edge_colors[(u, v)] is not None:
+                x_start, y_start = G.nodes[u]['x'], G.nodes[u]['y']
+                x_end, y_end = G.nodes[v]['x'], G.nodes[v]['y']
+                arrow = FancyArrowPatch((x_start, y_start), (x_end, y_end),
+                                        color=edge_colors[(u, v)], arrowstyle='-|>', mutation_scale=10, lw=1)
+                ax.add_patch(arrow)
+
     canvas = FigureCanvasAgg(fig)
     canvas.draw()
     buf = canvas.buffer_rgba()
@@ -44,17 +58,15 @@ def display(G: nx.Graph, path: list, screen: tk.Canvas, title: str, graph_title:
     @param path: list: list: the flight pattern of the drones
     """
     color = ['r', 'g', 'b', 'y', 'm', 'c', 'k', 'w', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan']
-    nb_moves = 0 
+    edge_colors = {}
     for i in range(len(path)):
         for j in range(len(path[i])):
             u, v = path[i][j][0], path[i][j][1]
-            nb_moves += 1
-            if G.has_edge(u, v):
-                G[u][v][0].update({'color': color[i % len(color)]})
-            if directionnal and G.has_edge(v, u):
-                G[v][u][0].update({'color': color[i % len(color)]})
+            edge_colors[(u, v)] = color[i % len(color)]
+            if directionnal:
+                edge_colors[(v, u)] = color[i % len(color)]
 
-    img = create_image(G)
+    img = create_image(G, path, edge_colors)
     graph_images.append((img, title))
     update_image(img, screen)
     graph_title.configure(text=title)
