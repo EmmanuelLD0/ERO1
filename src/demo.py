@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt  # for graph visualization
 import multiprocessing as mp  # for parallel processing
 import tkinter as tk  # for the graphical interface
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from copy import deepcopy
 
 
 def demo(
@@ -39,8 +40,10 @@ def demo(
         place, name = location
         graph = ox.graph_from_place(place, network_type='drive')
         graph = ox.convert.to_undirected(graph)
+        copy = deepcopy(graph)
+        print(f"Number of edges in {name}: {graph.number_of_edges()}")
         path, price = create_flight_pattern(graph, name, fixed_cost, cost_km, speed)
-        return graph, path, price, name
+        return copy, path, price, name
 
     with ThreadPoolExecutor() as executor:
         futures = {executor.submit(process_location, loc): loc for loc in locations}
@@ -48,7 +51,7 @@ def demo(
         for future in as_completed(futures):
             graph, path, price, name = future.result()
             print(f"{name} : ${round(price)}")
-            display(graph, path, screen, name)
+            display(graph, path, screen, name, title_label)
 
     print('-----------------------------------')
 

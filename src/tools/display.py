@@ -37,22 +37,24 @@ def update_image(img: Image, screen: Label):
     screen.configure(image=img_tk)
     screen.image = img_tk  # Keep a reference to avoid garbage collection
 
-def display(G: nx.Graph, path: list, screen: tk.Canvas, title: str):
+def display(G: nx.Graph, path: list, screen: tk.Canvas, title: str, graph_title: Label):
     """
     This function will display the graph of the city with the flight of the drone on it
     @param G: nx.Graph: the graph of the city
     @param path: list: list: the flight pattern of the drones
     """
     color = ['r', 'g', 'b', 'y', 'm', 'c', 'k']
-    
+    nb_moves = 0 
     for i in range(len(path)):
         for j in range(len(path[i])):
             u, v = path[i][j][0], path[i][j][1]
+            nb_moves += 1
             if G.has_edge(u, v):
                 G[u][v][0].update({'color': color[i % 7]})
             else:
                 G.add_edge(u, v, color=color[i % 7])
-
+    print(f"Number of moves in {title}: {nb_moves}")
     img = create_image(G)
     graph_images.append((img, title))
     update_image(img, screen)
+    graph_title.configure(text=title)
