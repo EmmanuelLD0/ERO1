@@ -82,6 +82,11 @@ To run the demo
 ./main.sh
 ```
 
+Click ```Customize Parameters``` to change cost, speed and other parameters <br>
+Click ```RUN DRONE``` to calculate the drone path <br>
+Click ```RUN SNOWPLOW``` to calculate the snowplow path <br>
+Click ```Next``` or ```Previous``` to move to the images of other graphs (Verdun, Outremont, etc...)
+
 ## :scroll: Documentation
 ```
 firefox documentation/html/index.html
