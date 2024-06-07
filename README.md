@@ -84,5 +84,5 @@ To run the demo
 
 ## :scroll: Documentation
 ```
-firefox documentations/html/index.html
+firefox documentation/html/index.html
 ```
