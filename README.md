@@ -15,14 +15,15 @@ while still providing an effecient snowplow service to the inhabitants. The city
 The goal is to minimize the cost of a typical snowplowing day. Our’s role is to find a short enough path
 for the snowplows around the Montréal road network, while still remove snow from the whole given zone.
 
-## 📝 Dependencies
+## 📝 Dependencies / Setup
 ```
-pip install -r requirements.txt
+./setup.sh
 ```
 
 ## 🚀 Build System
+To run the demo
 ```
-python src/demo.py
+./main.sh
 ```
 
 ## :scroll: Documentation
