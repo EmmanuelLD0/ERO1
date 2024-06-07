@@ -15,6 +15,42 @@ while still providing an effecient snowplow service to the inhabitants. The city
 The goal is to minimize the cost of a typical snowplowing day. Our’s role is to find a short enough path
 for the snowplows around the Montréal road network, while still remove snow from the whole given zone.
 
+## File Structure
+```bash
+.
+├── AUTHORS
+├── Doxyfile
+├── images
+│   └── montreal.png
+├── main.sh
+├── README.md
+├── requirements.txt
+├── setup.sh
+├── src
+│   ├── demo.py
+│   ├── drone_flight
+│   │   ├── flight_creator.py
+│   │   └── __init__.py
+│   ├── equipement
+│   │   ├── drone.py
+│   │   ├── __init__.py
+│   │   └── snowplow.py
+│   ├── graphical_interface.py
+│   ├── __init__.py
+│   ├── removal_planning
+│   │   ├── __init__.py
+│   │   └── planning.py
+│   └── tools
+│       ├── dijikstra.py
+│       ├── display.py
+│       └── __init__.py
+├── tests
+│   ├── dijikstra.py
+│   ├── graph_doc_test.py
+│   └── init.py
+└── test.sh
+```
+
 ## 📝 Dependencies / Setup
 ```
 ./setup.sh
