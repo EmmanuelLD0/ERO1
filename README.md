@@ -20,6 +20,17 @@ for the snowplows around the Montréal road network, while still remove snow fro
 ./setup.sh
 ```
 
+### Depending on your system
+Arch Linux
+```
+sudo pacman -S tk
+```
+
+Debian Based System
+```
+apt-get install python-tk
+```
+
 ## 🚀 Build System
 To run the demo
 ```
