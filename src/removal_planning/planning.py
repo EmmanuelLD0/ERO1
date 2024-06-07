@@ -32,7 +32,7 @@ def truck_paths(G, n_trucks):
         t2 = paths[m][len(paths[m])//2:]
         paths[m] = t2
         paths.append(t1)
-    return paths
+    return paths, 0
 
 
 def get_path(G):
@@ -46,16 +46,12 @@ def get_path(G):
     for edge in dE:
         unG.add_edge(edge[0],edge[1])
         edges_left.add_edge(edge[0],edge[1])
-    print("ung:")
-    print(unG.edges)
     try:
         unG = nx.eulerize(unG)
     except Exception as e:
         res = []
         components = [G.subgraph(c).copy() for c in nx.strongly_connected_components(G)]
         for g in components:
-            print("subgraph len")
-            print(len(g.edges))
             res += (get_path(g))
         return res
     path = []
@@ -99,8 +95,6 @@ def get_path(G):
         try:
             sP = nx.shortest_path(G, a, b)
         except:
-            print((a,b))
-            print(res)
             return [res] + get_path(edges_left)
         for i in range(len(sP) - 1):
             try:
@@ -120,5 +114,4 @@ def get_path(G):
             res.append(b)
             res += sP[:-1]
     res.append(path[le][1])
-    print(res)
     return [res]

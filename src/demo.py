@@ -1,6 +1,7 @@
 from drone_flight.flight_creator import *
 from tools.display import display
 from copy import deepcopy
+from removal_planning.planning import truck_paths
 
 """
 ! this file will show off a demo of our code
@@ -21,6 +22,7 @@ def demo(
     cost_km: float,
     speed: float,
     graph_images: list,
+    drones: bool = True,
 ):
     print("Initial Survey of Montreal with Drones...")
     print("Calculating the price for each sector...")
@@ -29,8 +31,8 @@ def demo(
     ox.settings.use_cache = True
 
     locations = [
-        ('Verdun, Montreal, Quebec, Canada', 'verdun'),
-        ('Outremont, Montreal, Quebec, Canada', 'outremont'),
+        ('Verdun, Montreal, Quebec, Canada', 'Verdun'),
+        ('Outremont, Montreal, Quebec, Canada', 'Outremont'),
         ('Anjou, Montreal, Quebec, Canada', 'Anjou'),
         ('Rivière-des-Prairies, Montreal, Quebec, Canada', 'Rivière-des-Prairies'),
         ('Le plateau-Mont-Royal, Montreal, Quebec, Canada', 'Le plateau-Mont-Royal')
@@ -39,11 +41,28 @@ def demo(
     def process_location(location):
         place, name = location
         graph = ox.graph_from_place(place, network_type='drive')
-        graph = ox.convert.to_undirected(graph)
-        copy = deepcopy(graph)
-        print(f"Number of edges in {name}: {graph.number_of_edges()}")
-        path, price = create_flight_pattern(graph, name, fixed_cost, cost_km, speed)
-        return copy, path, price, name
+        if drones:
+            graph = ox.convert.to_undirected(graph)
+            copy = deepcopy(graph)
+            name = name + ' Drone'
+            path, price = create_flight_pattern(graph, name, fixed_cost, cost_km, speed)
+            return copy, path, price, name
+        else:
+            if name == 'Anjou':
+                path, price = truck_paths(graph, 15)
+            elif name == 'Verdun':
+                path, price = truck_paths(graph, 1)
+            elif name == 'Outremont':
+                path, price = truck_paths(graph, 1)
+            elif name == 'Le plateau-Mont-Royal':
+                path, price = truck_paths(graph, 1)
+            else:
+                print('Error')
+                path = []
+                price = 0
+            name = name + ' Snowplow'
+            return graph, path, price, name
+            
 
     with ThreadPoolExecutor() as executor:
         futures = {executor.submit(process_location, loc): loc for loc in locations}
@@ -54,5 +73,3 @@ def demo(
             display(graph, path, screen, name, title_label)
 
     print('-----------------------------------')
-
-    print('Plowing the Snow...')

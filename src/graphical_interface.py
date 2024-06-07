@@ -12,6 +12,7 @@ from customtkinter import CTk, CTkButton, CTkLabel, CTkTextbox
 import sys
 import threading
 
+
 class RediectStdout:
     """
     This class will redirect the stdout to the terminal
@@ -97,20 +98,26 @@ def show_graph(screen: tk.Label, title_label: tk.Label, direction: int):
     update_image(img, screen)
     title_label.configure(text=title)
 
+
 def load_image(image_path):
     image = ctk.CTkImage()
     image.load(image_path)
     return image
 
+
 def add_image_to_graph_title(image_path):
     image = load_image(image_path)
     graph_title.set_content(image)
 
-def start_demo_thread(image_label, graph_title):
+
+def start_demo_thread(image_label, graph_title, drones):
     """
     This function will start the demo thread with the latest values
     """
-    thread = threading.Thread(target=demo, args=(image_label, graph_title, fixed_cost, cost_km, speed, graph_images))
+    thread = threading.Thread(
+        target=demo,
+        args=(image_label, graph_title, fixed_cost, cost_km, speed, graph_images, drones),
+    )
     thread.start()
 
 
@@ -121,10 +128,10 @@ def main():
     # screen setup
     root = CTk()
     root.title("ERO")
-    set_appearance_mode('dark')
+    set_appearance_mode("dark")
     root.geometry("800x600")
 
-        # title
+    # title
     title = CTkLabel(root, text="ERO1 PARIS 39", font=("Helvetica", 24))
     title.pack(padx=10, pady=10)
 
@@ -136,47 +143,76 @@ def main():
     image_label = CTkLabel(root, text="")
     image_label.pack()
 
-
     # Create a frame for the navigation buttons
     nav_frame = CTkFrame(root)
     nav_frame.pack()
 
     # Navigation buttons
     prev_button = CTkButton(
-        master=nav_frame, text="Previous", font=("Arial", 15),
+        master=nav_frame,
+        text="Previous",
+        font=("Arial", 15),
         fg_color="grey",
-        command=lambda: show_graph(image_label, graph_title, -1)
+        command=lambda: show_graph(image_label, graph_title, -1),
     )
     prev_button.grid(row=0, column=0, padx=10, pady=10)
 
     next_button = CTkButton(
-        nav_frame, text="Next", font=("Arial", 15),
+        nav_frame,
+        text="Next",
+        font=("Arial", 15),
         fg_color="grey",
-        command=lambda: show_graph(image_label, graph_title, 1)
+        command=lambda: show_graph(image_label, graph_title, 1),
     )
     next_button.grid(row=0, column=1, padx=10, pady=10)
 
     # Debug interface
-    debug_terminal = CTkTextbox(master=root, bg_color="black", fg_color="white", text_color="black")
+    debug_terminal = CTkTextbox(
+        master=root, bg_color="black", fg_color="white", text_color="black"
+    )
     debug_terminal.pack(fill=BOTH, expand=True, padx=10, pady=10)
 
     # Create a frame for the action buttons
     button_frame = CTkFrame(root)
     button_frame.pack(padx=10, pady=10)
 
-    # Demo button
+    # Demo Drone button
     demo_button = CTkButton(
-        master=button_frame, text="RUN PROGRAM", font=('Helvetica', 18),
+        master=button_frame,
+        text="RUN DRONE",
+        font=("Helvetica", 18),
         fg_color="green",
-        command=lambda: start_demo_thread(image_label, graph_title)
+        command=lambda: start_demo_thread(image_label, graph_title, True),
     )
     demo_button.grid(row=0, column=1, padx=10, pady=10)
 
-    # Settings button
-    settings_button = CTkButton(button_frame, text="Customize Parameters", font=('Arial', 15),
-                                command=lambda: open_popup(root))
+    # Settings drones button
+    settings_button = CTkButton(
+        button_frame,
+        text="Customize Drones",
+        font=("Arial", 15),
+        command=lambda: open_popup(root),
+    )
     settings_button.grid(row=0, column=0, padx=10, pady=10)
 
+    # Demo snowplows button
+    snow_button = CTkButton(
+        master=button_frame,
+        text="RUN SNOWPLOWS",
+        font=("Helvetica", 18),
+        fg_color="red",
+        command=lambda: start_demo_thread(image_label, graph_title, False),
+    )
+    snow_button.grid(row=1, column=1, padx=10, pady=10)
+
+    # Settings button
+    settings_snow = CTkButton(
+        button_frame,
+        text="Customize Snowplows",
+        font=("Arial", 15),
+        command=lambda: open_popup(root),
+    )
+    settings_snow.grid(row=1, column=0, padx=10, pady=10)
 
     # catching all stdout and stderr
     OriginalStdout = sys.stdout

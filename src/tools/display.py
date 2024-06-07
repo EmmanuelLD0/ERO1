@@ -43,18 +43,17 @@ def display(G: nx.Graph, path: list, screen: tk.Canvas, title: str, graph_title:
     @param G: nx.Graph: the graph of the city
     @param path: list: list: the flight pattern of the drones
     """
-    color = ['r', 'g', 'b', 'y', 'm', 'c', 'k']
+    color = ['r', 'g', 'b', 'y', 'm', 'c', 'k', 'w', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan']
     nb_moves = 0 
     for i in range(len(path)):
         for j in range(len(path[i])):
             u, v = path[i][j][0], path[i][j][1]
             nb_moves += 1
             if G.has_edge(u, v):
-                G[u][v][0].update({'color': color[i % 7]})
+                G[u][v][0].update({'color': color[i % len(color)]})
             if directionnal and G.has_edge(v, u):
-                G[v][u][0].update({'color': color[i % 7]})
+                G[v][u][0].update({'color': color[i % len(color)]})
 
-    print(f"Number of moves in {title}: {nb_moves}")
     img = create_image(G)
     graph_images.append((img, title))
     update_image(img, screen)

@@ -129,8 +129,6 @@ def calculate_price(G: nx.Graph, path: list, drones: list, sector: str):
         if times[active_drone_index] > datetime.strptime("23:59:59", "%H:%M:%S"):
             # went over time needs more drones
             return [], -1
-    for i in range(len(drones)):
-        print("Drone", i, sector, "finished at", times[i].strftime("%H:%M:%S"))
     return new_path, price
 
 
