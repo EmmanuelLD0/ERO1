@@ -34,7 +34,7 @@ def update_image(img: Image, screen: Label):
     @param screen: tk.Canvas: the screen
     """
     img_tk = ImageTk.PhotoImage(img)
-    screen.config(image=img_tk)
+    screen.configure(image=img_tk)
     screen.image = img_tk  # Keep a reference to avoid garbage collection
 
 def display(G: nx.Graph, path: list, screen: tk.Canvas, title: str):

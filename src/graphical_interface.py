@@ -94,7 +94,17 @@ def show_graph(screen: tk.Label, title_label: tk.Label, direction: int):
     current_index = max(0, min(current_index, len(graph_images) - 1))
     img, title = graph_images[current_index]
     update_image(img, screen)
-    title_label.config(text=title)
+    title_label.configure(text=title)
+
+def load_image(image_path):
+    image = ctk.CTkImage()
+    image.load(image_path)
+    return image
+
+def add_image_to_graph_title(image_path):
+    image = load_image(image_path)
+    graph_title.set_content(image)
+
 
 def main():
     """
@@ -112,7 +122,7 @@ def main():
 
     # Graph title
     graph_title = CTkLabel(root, text="")
-    graph_title.pack()
+    # graph_title.pack()
 
     # settings button
     settings_button = CTkButton(master=root, text="Customize Parameters", font=('Arial', 15),
@@ -121,7 +131,7 @@ def main():
     settings_button.pack()
 
     #dw about this it's too fool it
-    image_label = tk.Label(root)
+    image_label = CTkLabel(root, width=100, height=100)
 
     #create the thread for launching the demo
     thread = threading.Thread(target=demo, args=(image_label, graph_title, fixed_cost, cost_km, speed, graph_images))
