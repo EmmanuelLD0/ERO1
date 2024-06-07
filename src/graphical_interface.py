@@ -7,6 +7,7 @@ from demo import demo
 """
 
 import tkinter as tk
+from customtkinter import *
 import sys
 import threading
 
@@ -100,22 +101,24 @@ def main():
     This function will create the main window for the user interface
     """
     # screen setup
-    root = tk.Tk()
+    root = CTk()
     root.title("ERO")
+    set_appearance_mode('dark')
     root.geometry("800x600")
 
     # title
-    title = tk.Label(root, text="ERO1 PING 39", font=("Arial", 24))
+    title = CTkLabel(root, text="ERO1 PING 39", font=("Helvetica", 24))
     title.pack()
 
     # Graph title
-    graph_title = tk.Label(root, text="")
+    graph_title = CTkLabel(root, text="")
     graph_title.pack()
 
     # settings button
-    settings_button = tk.Button(root, text="Customize Parameters", font=('Arial', 15),
+    settings_button = CTkButton(master=root, text="Customize Parameters", font=('Arial', 15),
                                 command=lambda: open_popup(root))
-    settings_button.pack(padx=10, pady=10)
+    # settings_button.pack(padx=10, pady=10)
+    settings_button.pack()
 
     #dw about this it's too fool it
     image_label = tk.Label(root)
@@ -124,12 +127,16 @@ def main():
     thread = threading.Thread(target=demo, args=(image_label, graph_title, fixed_cost, cost_km, speed, graph_images))
 
     # navigation buttons
-    prev_button = tk.Button(
-        root, text="Previous", font=("Arial", 15), command=lambda: show_graph(image_label, image_label, -1)
+    prev_button = CTkButton(
+        master=root, text="Previous", font=("Arial", 15),
+        fg_color="grey",
+        command=lambda: show_graph(image_label, image_label, -1)
     )
     prev_button.pack(side=tk.LEFT, padx=10)
-    next_button = tk.Button(
+
+    next_button = CTkButton(
         root, text="Next", font=("Arial", 15),
+        fg_color="grey",
         command=lambda: show_graph(image_label, image_label, 1)
     )
     next_button.pack(side=tk.RIGHT, padx=10)
@@ -138,12 +145,15 @@ def main():
     image_label.pack()
 
     # debug interface
-    debug_terminal = tk.Text(root, font=('Arial', 12), width=80, height=15)
-    debug_terminal.pack()
+    # debug_terminal = tk.Text(root, font=('Arial', 12), width=80, height=15)
+    debug_terminal = CTkTextbox(master=root, bg_color="black", fg_color="white", text_color="black")
+    # debug_terminal.pack()
+    debug_terminal.pack(fill=BOTH, expand=True, padx=10, pady=10)
 
     # demo button
-    demo_button = tk.Button(
-        root, text="RUN PROGRAM", font=('Arial', 18),
+    demo_button = CTkButton(
+        master=root, text="RUN PROGRAM", font=('Helvetica', 18),
+        fg_color="green",
         command=lambda: thread.start() 
     )
     demo_button.pack()
