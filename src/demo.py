@@ -41,7 +41,7 @@ def demo(
     ]
 
     def merged_sector() -> tuple[nx.Graph, list[list[tuple[int, int]]], float, str] :
-        G = ox.load_graphml('./data/sectors_merged.graphml')
+        G = ox.load_graphml('./src/data/sectors_merged.graphml')
         G = ox.convert.to_undirected(G)
         name = 'Merged Sectors'
         return G, sector_path, sec_price, name
