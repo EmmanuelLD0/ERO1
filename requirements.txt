@@ -3,4 +3,6 @@ osmnx
 networkx
 PyQt5
 pytest
-tk
+scikit-learn
+setuptools
+customtkinter==5.2.2

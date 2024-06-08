@@ -23,7 +23,7 @@ def create_image(G: nx.Graph, path: list, edge_colors: dict):
     """
     #edge_colors = [data.get('color', 'k') for u, v, key, data in G.edges(keys=True, data=True)]
     #fig, ax = ox.plot_graph(G, edge_color=edge_colors, bgcolor='white', node_color='black', node_edgecolor='black', node_zorder=2, show=False)
-    fig, ax = ox.plot_graph(G, bgcolor='white', node_color='black', node_edgecolor='black', node_zorder=2, show=False, close=True)
+    fig, ax = ox.plot_graph(G, bgcolor='white', node_color='black', node_edgecolor='black', node_zorder=2, show=False, close=True, node_size=1)
 
 
     for i, route in enumerate(path):

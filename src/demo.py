@@ -2,6 +2,7 @@ from drone_flight.flight_creator import *
 from tools.display import display
 from copy import deepcopy
 from removal_planning.planning import truck_paths
+from data.path_merged_sectors import sector_path, sec_price
 
 """
 ! this file will show off a demo of our code
@@ -35,10 +36,17 @@ def demo(
         ('Outremont, Montreal, Quebec, Canada', 'Outremont'),
         ('Anjou, Montreal, Quebec, Canada', 'Anjou'),
         ('Rivière-des-Prairies, Montreal, Quebec, Canada', 'Rivière-des-Prairies'),
-        ('Le plateau-Mont-Royal, Montreal, Quebec, Canada', 'Le plateau-Mont-Royal')
+        ('Le plateau-Mont-Royal, Montreal, Quebec, Canada', 'Le plateau-Mont-Royal'),
+        ('Merged', 'Merged Sectors')
     ]
 
-    def process_location(location):
+    def merged_sector() -> tuple[nx.Graph, list[list[tuple[int, int]]], float, str] :
+        G = ox.load_graphml('./data/sectors_merged.graphml')
+        G = ox.convert.to_undirected(G)
+        name = 'Merged Sectors'
+        return G, sector_path, sec_price, name
+
+    def process_location(location) -> tuple[nx.Graph, list[list[tuple[int, int]]], float, str] :
         place, name = location
         graph = ox.graph_from_place(place, network_type='drive')
         if drones:
@@ -65,7 +73,7 @@ def demo(
             
 
     with ThreadPoolExecutor() as executor:
-        futures = {executor.submit(process_location, loc): loc for loc in locations}
+        futures = {executor.submit(process_location, loc) if (drones and loc[0] != 'Merged') or (not drones) else executor.submit(merged_sector) for loc in locations}
 
         for future in as_completed(futures):
             graph, path, price, name = future.result()
