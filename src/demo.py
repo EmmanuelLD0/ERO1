@@ -3,6 +3,7 @@ from tools.display import display
 from copy import deepcopy
 from removal_planning.planning import truck_paths
 from data.path_merged_sectors import sector_path, sec_price
+from data.anjou_data import anjou_path, anjou_price
 
 """
 ! this file will show off a demo of our code
@@ -53,6 +54,9 @@ def demo(
             graph = ox.convert.to_undirected(graph)
             copy = deepcopy(graph)
             name = name + ' Drone'
+            if name == 'Anjou Drone':
+                return copy, anjou_path, anjou_price, name
+
             path, price = create_flight_pattern(graph, name, fixed_cost, cost_km, speed)
             return copy, path, price, name
         else:
