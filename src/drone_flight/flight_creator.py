@@ -59,26 +59,41 @@ def cpp(G: nx.Graph):
     """
     if not nx.is_connected(G):
         raise ValueError("The graph is not connected.")
+    
+    odd_degree_nodes = [v for v, d in G.degree() if d % 2 == 1]
+    if len(odd_degree_nodes) in [0, 2]:
+        return list(eulerian_path(G))
+    
+    # If more than 2 odd degree nodes, solve the Chinese Postman Problem (CPP)
+    pairs = list(combinations(odd_degree_nodes, 2))
+    
+    # Find shortest paths between all pairs of odd degree nodes
+    shortest_paths = {pair: nx.shortest_path_length(G, source=pair[0], target=pair[1], weight='length')
+                      for pair in pairs}
+    
+    # Create a complete graph where nodes are odd degree nodes
+    complete_graph = nx.Graph()
+    for pair, length in shortest_paths.items():
+        complete_graph.add_edge(pair[0], pair[1], weight=length)
+    
+    # Find minimum weight matching in the complete graph
+    min_weight_matching = nx.algorithms.matching.min_weight_matching(complete_graph, weight='weight')
+    
+    # Add the matching edges back to the original graph
+    for u, v in min_weight_matching:
+        path = nx.shortest_path(G, source=u, target=v, weight='length')
+        for i in range(len(path) - 1):
+            if G.has_edge(path[i], path[i + 1]):
+                edge_data = G.get_edge_data(path[i], path[i + 1])
+                length_ = edge_data.get('length', 1)
+                G.add_edge(path[i], path[i + 1], length=length_)
+            else:
+                print(f"Lacking edge: {path[i]} -> {path[i+1]}")
+    
+    # Now find the Eulerian circuit in the augmented graph
+    ans = list(nx.eulerian_circuit(G))
+    return ans
 
-    odd_degree_nodes = [node for node, degree in G.degree() if degree % 2 == 1]
-    odd_node_pairs = list(combinations(odd_degree_nodes, 2))
-    odd_node_pairs_shortest_paths = [
-        (pair, nx.shortest_path(G, pair[0], pair[1])) for pair in odd_node_pairs
-    ]
-
-    odd_node_graph = nx.Graph()
-    for pair, path in odd_node_pairs_shortest_paths:
-        odd_node_graph.add_edge(pair[0], pair[1], weight=len(path) - 1)
-
-    min_weight_matching = nx.algorithms.max_weight_matching(odd_node_graph, True)
-
-    for node1, node2 in min_weight_matching:
-        path = nx.shortest_path(G, node1, node2)
-        path_edges = list(zip(path[:-1], path[1:]))
-        G.add_edges_from(path_edges)
-
-    euler_circuit = list(nx.eulerian_circuit(G))
-    return euler_circuit
 
 def calculate_price(G: nx.Graph, path: list, drones: list, sector: str):
     """
