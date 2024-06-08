@@ -15,7 +15,7 @@ from matplotlib.patches import FancyArrowPatch
 
 graph_images = []
 
-def create_image(G: nx.Graph, path: list, edge_colors: dict):
+def create_image(G: nx.Graph, path: list, edge_colors: dict, edge_labels: dict = {}):
     """
     This function will create an image of the graph
     @param G: nx.Graph: the graph of the city
@@ -34,6 +34,11 @@ def create_image(G: nx.Graph, path: list, edge_colors: dict):
                 arrow = FancyArrowPatch((x_start, y_start), (x_end, y_end),
                                         color=edge_colors[(u, v)], arrowstyle='-|>', mutation_scale=10, lw=1)
                 ax.add_patch(arrow)
+
+    for (u, v), label in edge_labels.items():
+        x_start, y_start = G.nodes[u]['x'], G.nodes[u]['y']
+        x_end, y_end = G.nodes[v]['x'], G.nodes[v]['y']
+        ax.text((x_start + x_end) / 2, (y_start + y_end) / 2, label, fontsize=8, fontweight='bold', color='black')
 
     canvas = FigureCanvasAgg(fig)
     canvas.draw()
@@ -59,14 +64,17 @@ def display(G: nx.Graph, path: list, screen: tk.Canvas, title: str, graph_title:
     """
     color = ['r', 'g', 'b', 'y', 'm', 'c', 'k', 'w', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan']
     edge_colors = {}
+    edge_labels = {}
     for i in range(len(path)):
         for j in range(len(path[i])):
             u, v = path[i][j][0], path[i][j][1]
             edge_colors[(u, v)] = color[i % len(color)]
+            if j == 0:
+                edge_labels[(u, v)] = f'Start drone {i}'
             if directionnal:
                 edge_colors[(v, u)] = color[i % len(color)]
 
-    img = create_image(G, path, edge_colors)
+    img = create_image(G, path, edge_colors, edge_labels)
     graph_images.append((img, title))
     update_image(img, screen)
     graph_title.configure(text=title)
