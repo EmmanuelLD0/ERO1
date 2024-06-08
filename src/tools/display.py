@@ -70,7 +70,7 @@ def display(G: nx.Graph, path: list, screen: tk.Canvas, title: str, graph_title:
             u, v = path[i][j][0], path[i][j][1]
             edge_colors[(u, v)] = color[i % len(color)]
             if j == 0:
-                edge_labels[(u, v)] = f'Start drone {i}'
+                edge_labels[(u, v)] = f'Start path {i}'
             if directionnal:
                 edge_colors[(v, u)] = color[i % len(color)]
 
