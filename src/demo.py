@@ -2,7 +2,7 @@ from drone_flight.flight_creator import *
 from tools.display import display
 from copy import deepcopy
 from removal_planning.planning import truck_paths
-from data.path_merged_sectors import sector_path, sec_price
+from data.path_merged_sectors import sector_path, sector_price
 from data.anjou_data import anjou_path, anjou_price
 
 """
@@ -45,7 +45,7 @@ def demo(
         G = ox.load_graphml('./src/data/sectors_merged.graphml')
         G = ox.convert.to_undirected(G)
         name = 'Merged Sectors'
-        return G, sector_path, sec_price, name
+        return G, sector_path, sector_price, name
 
     def process_location(location) -> tuple[nx.Graph, list[list[tuple[int, int]]], float, str] :
         place, name = location
