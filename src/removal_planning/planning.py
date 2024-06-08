@@ -38,7 +38,26 @@ def truck_paths(G, n_trucks):
         t2 = paths[m][len(paths[m])//2:]
         paths[m] = t2
         paths.append(t1)
-    return paths, 0
+    price = 0
+    for p in paths:
+        cpd = 500
+        cpk = 1.1
+        cph = 1.3
+        sp = 10
+        if len(p) > 1000:
+            cpd = 800
+            cpk = 1.3
+            cph = 1.1
+            sp = 20
+        for e in p:
+            km = (G[e[0]][e[1]][0]["length"])
+            price += cpk * km
+            if km > 8 * sp:
+                price += 8 * cph
+                price += ((km - 8 * sp) / sp) * (cph + 0.2)
+            else:
+                price += (km / sp) * cph
+    return paths, price
 
 
 def get_path(G):

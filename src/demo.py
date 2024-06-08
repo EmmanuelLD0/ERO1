@@ -63,11 +63,11 @@ def demo(
             if name == 'Anjou':
                 path, price = truck_paths(graph, 15)
             elif name == 'Verdun':
-                path, price = truck_paths(graph, 1)
+                path, price = truck_paths(graph, 8)
             elif name == 'Outremont':
-                path, price = truck_paths(graph, 1)
+                path, price = truck_paths(graph, 13)
             elif name == 'Le plateau-Mont-Royal':
-                path, price = truck_paths(graph, 1)
+                path, price = truck_paths(graph, 12)
             elif name == 'Merged':
                 path, price = sector_path, sec_price
             else:
