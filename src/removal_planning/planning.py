@@ -12,6 +12,12 @@ from copy import copy
 
 
 def truck_paths(G, n_trucks):
+    """
+    ! This function merges or splits the truck paths created to match the wanted number of paths.
+    @param G: DiGraph of the city
+    @param n_trucks: number of paths wanted in the result
+    @return: list of list of pairs representing the different paths and a 0
+    """
     temp = get_path(G)
     paths = []
     for i in range(len(temp)):
@@ -36,6 +42,11 @@ def truck_paths(G, n_trucks):
 
 
 def get_path(G):
+    """
+    ! This function takes a Digraph and gives a way to split the graph into paths that span it
+    @param G: DiGraph of the city
+    @return: list of list of pairs representing the different paths
+    """
     if nx.is_empty(G):
         return []
     dE = G.edges
