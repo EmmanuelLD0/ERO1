@@ -68,8 +68,10 @@ def demo(
                 path, price = truck_paths(graph, 1)
             elif name == 'Le plateau-Mont-Royal':
                 path, price = truck_paths(graph, 1)
+            elif name == 'Merged':
+                path, price = sector_path, sec_price
             else:
-                print('Error')
+                print(f"Error: {name}")
                 path = []
                 price = 0
             name = name + ' Snowplow'
@@ -77,7 +79,7 @@ def demo(
             
 
     with ThreadPoolExecutor() as executor:
-        futures = {executor.submit(process_location, loc) if (drones and loc[0] != 'Merged') or (not drones) else executor.submit(merged_sector) for loc in locations}
+        futures = {executor.submit(process_location, loc) if loc[0] != 'Merged' else executor.submit(merged_sector) for loc in locations}
 
         for future in as_completed(futures):
             graph, path, price, name = future.result()
